@@ -1,0 +1,36 @@
+
+=== [1단계] executor RUNNING 중 container limits 확인 ===
+
+date && hostname && kubectl get pods -n spark && kubectl describe pod memorystress-87ad919d516dc25f-exec-1 -n spark | grep -A4 "Limits:"
+Fri Apr  3 12:40:44 KST 2026
+DESKTOP-C6I91MV
+
+NAME                                   READY   STATUS    RESTARTS   AGE
+memory-stress-driver                   1/1     Running   0          13s
+memorystress-87ad919d516dc25f-exec-1   1/1     Running   0          2s
+memorystress-87ad919d516dc25f-exec-2   1/1     Running   0          2s
+
+    Limits:
+      memory:  2Gi
+    Requests:
+      cpu:     1
+      memory:  2Gi
+
+수정된 yaml 설정 확인:
+  executor.memory: "1g" + executor.memoryOverhead: "1g"
+  → container limit = 1g + 1g = 2Gi  ✅
+  → Python 700MB 할당 << 2Gi limit  ✅ (OOMKilled 없음)
+
+kubectl top pod 미지원 (k3d metrics-server 미설치) → kubectl describe Limits로 대체
+
+---
+
+=== [2단계] SparkApplication COMPLETED 증명 (정상 완료 실행) ===
+
+date && hostname && kubectl get pods -n spark && kubectl get sparkapplication memory-stress -n spark
+Fri Apr  3 12:17:18 KST 2026
+DESKTOP-C6I91MV
+NAME                   READY   STATUS      RESTARTS   AGE
+memory-stress-driver   0/1     Completed   0          2m28s
+NAME            SUSPEND   STATUS      ATTEMPTS   START                  FINISH                 AGE
+memory-stress             COMPLETED   1          2026-04-03T03:14:50Z   2026-04-03T03:16:33s   2m33s

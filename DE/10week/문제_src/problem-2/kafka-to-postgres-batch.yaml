@@ -1,0 +1,49 @@
+# 문제 2 - SparkApplication (spark-operator)
+#
+# 전제 조건:
+#   - 문제 1의 Kafka cluster가 k8s에 배포되어 있어야 함
+#   - spark-operator 설치:
+#       helm repo add spark-operator https://kubeflow.github.io/spark-operator
+#       helm install spark-operator spark-operator/spark-operator \
+#         --namespace spark-operator --create-namespace \
+#         --set sparkJobNamespace=default
+#   - PostgreSQL 배포:
+#       kubectl apply -f postgres.yaml   (직접 작성 또는 helm 사용)
+#   - PySpark 이미지 빌드:
+#       docker build -t custom-spark:latest .
+#       k3d image import custom-spark:latest -c mycluster
+#
+# 배포:
+#   kubectl apply -f kafka-to-postgres-batch.yaml
+#   kubectl get sparkapplication
+#
+# TODO: image, 연결 정보를 본인 환경에 맞게 수정
+
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: kafka-to-postgres-batch
+  namespace: default
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  # TODO: 본인 환경에 맞는 이미지로 교체
+  image: "custom-spark:latest"
+  imagePullPolicy: Never
+  mainApplicationFile: "local:///opt/spark/jobs/consume_kafka_to_postgres_batch.py"
+  sparkVersion: "3.5.0"
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 1
+    memory: "512m"
+    labels:
+      version: "3.5.0"
+    serviceAccount: spark
+  executor:
+    cores: 1
+    instances: 1
+    memory: "1g"
+    labels:
+      version: "3.5.0"

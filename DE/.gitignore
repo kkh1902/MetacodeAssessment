@@ -1,0 +1,45 @@
+# 수강생 과제 폴더
+수강생/
+
+# 압축 파일
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# 문서 파일
+*.docx
+*.xlsx
+*.pptx
+*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Data
+*.csv
+*.parquet

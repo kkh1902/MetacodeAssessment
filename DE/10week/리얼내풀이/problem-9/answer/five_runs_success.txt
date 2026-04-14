@@ -1,0 +1,13 @@
+==================================================
+수정 후 5회 연속 실행 결과
+==================================================
+
+수정 내용: PG_URL_WRITE에서 socketTimeout=5000 제거
+
+Run 1: [Spark] daily_sales_final 적재 완료  EXIT:0  SUCCESS
+Run 2: [Spark] daily_sales_final 적재 완료  EXIT:0  SUCCESS
+Run 3: [Spark] daily_sales_final 적재 완료  EXIT:0  SUCCESS
+Run 4: [Spark] daily_sales_final 적재 완료  EXIT:0  SUCCESS
+Run 5: [Spark] daily_sales_final 적재 완료  EXIT:0  SUCCESS
+
+→ 5회 모두 PSQLException 없이 성공

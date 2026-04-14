@@ -1,0 +1,25 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: memory-stress
+  namespace: spark
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "custom-spark:3.5.4"
+  imagePullPolicy: Never
+  mainApplicationFile: "local:///opt/spark/jobs/memory_stress.py"
+  sparkVersion: "3.5.4"
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 1
+    memory: "1g"
+    memoryOverhead: "512m"
+    serviceAccount: spark
+  executor:
+    cores: 1
+    instances: 2
+    memory: "1g"
+    memoryOverhead: "1g"
