@@ -1,0 +1,12 @@
+[
+{"order_id":1001,"user_id":1,"order_ts":"2019-01-05 11:20:00","amount":75.50},
+{"order_id":1002,"user_id":2,"order_ts":"2021-12-15 16:30:10","amount":150.00},
+{"order_id":1003,"user_id":3,"order_ts":"2023-03-01 09:00:00","amount":200.00},
+{"order_id":1004,"user_id":1,"order_ts":"2020-05-20 13:45:00","amount":50.00},
+{"order_id":1005,"user_id":4,"order_ts":"2019-08-01 10:10:10","amount":120.75},
+{"order_id":1006,"user_id":5,"order_ts":"2022-07-15 19:20:00","amount":99.99},
+{"order_id":1007,"user_id":2,"order_ts":"2022-01-10 07:30:30","amount":250.00},
+{"order_id":1008,"user_id":3,"order_ts":"2023-04-15 12:00:00","amount":110.00},
+{"order_id":1009,"user_id":5,"order_ts":"2023-01-25 15:45:45","amount":45.00},
+{"order_id":1010,"user_id":4,"order_ts":"2020-12-31 23:59:59","amount":300.00}
+]
