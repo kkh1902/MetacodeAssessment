@@ -1,0 +1,67 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-19909f334eb-4907bb0ea3f844fd": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "localhost",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "3306",
+				"url": "jdbc:mysql://localhost:3306/",
+				"configurationType": "MANUAL",
+				"home": "mysql_client",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		},
+		"mysql8-1990a7f706f-c3253555650e196": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "localhost 2",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "3306",
+				"url": "jdbc:mysql://localhost:3306/",
+				"configurationType": "MANUAL",
+				"home": "mysql_client",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		},
+		"csvjdbc-1990a7fb966-712c5f1473f5607e": {
+			"provider": "generic",
+			"driver": "csvjdbc",
+			"name": "csv",
+			"save-password": true,
+			"configuration": {
+				"database": "I:\\내 드라이브\\MetaCode\\메타코드_부트캠프\\5. 메타코드 환급형 부트캠프\\데이터 분석\\데이터분석_과제_문제파일\\11주차_작업\\4기\\작업용_11주차\\csv",
+				"url": "jdbc:relique:csv:I:\\내 드라이브\\MetaCode\\메타코드_부트캠프\\5. 메타코드 환급형 부트캠프\\데이터 분석\\데이터분석_과제_문제파일\\11주차_작업\\4기\\작업용_11주차\\csv",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": false,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}
