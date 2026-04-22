@@ -1,0 +1,35 @@
+name: Deploy to AWS
+on:
+  push:
+    branches: [main, develop]  # 오류 1: staging 누락
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'development' || 'production' }}
+    # 오류 2: main이 development로 매핑됨 (반대여야 함)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform/aws
+        run: |
+          terraform init \
+            -backend-config="bucket=metacode-terraform-state"
+          # 오류 3: -backend-config key 누락
+
+      - name: Build Docker Image
+        run: |
+          docker build -t backend -f ./Dockerfile ./backend
+          # 오류 4: Dockerfile 경로 오류 (올바른 경로는?)

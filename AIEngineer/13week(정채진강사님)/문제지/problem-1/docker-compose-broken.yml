@@ -1,0 +1,30 @@
+# 이 파일에는 4개의 오류가 숨겨져 있습니다. 모두 찾아 수정하세요.
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "1234:8000"
+    env_file:
+      - ./backend/.env.production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "1235:80"
+    depends_on:
+      - backend
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    driver: bridge

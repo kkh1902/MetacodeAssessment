@@ -1,0 +1,25 @@
+{
+  "family": "backend-dev",
+  "executionRoleArn": "arn:aws:iam::123456789:role/wrongRoleName",
+  "taskRoleArn": "arn:aws:iam::123456789:role/ecsTaskRole-dev",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "containerDefinitions": [{
+    "name": "backend",
+    "image": "123456789.dkr.ecr.ap-northeast-2.amazonaws.com/backend-dev:v1.0.0",
+    "portMappings": [{"containerPort": 8000}],
+    "secrets": [
+      {"name": "OPENAI_API_KEY", "name": "openai-api-key-dev"}
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/wrong-log-group",
+        "awslogs-region": "ap-northeast-2",
+        "awslogs-stream-prefix": "ecs"
+      }
+    }
+  }]
+}
