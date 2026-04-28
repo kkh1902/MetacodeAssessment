@@ -1,0 +1,65 @@
+# 문제 9 - 샘플 에러 로그 (10회 실행 중 실패 샘플 3건 포함)
+# 학생은 이 로그를 분석하여 root cause를 특정해야 합니다.
+# 일부 에러는 로그 트랩(무관한 에러)입니다.
+
+============================================================
+[RUN #2]  2025-04-01 09:14:32  FAILED
+============================================================
+25/04/01 09:14:33 WARN GCMetrics: [spark-worker-1] java.lang.OutOfMemoryError: GC overhead limit exceeded
+    at java.util.Arrays.copyOf(Arrays.java:3210)
+    at java.util.ArrayList.grow(ArrayList.java:265)
+    ... (GC pressure warning — worker continued execution)
+25/04/01 09:14:35 INFO DAGScheduler: Submitting 8 missing tasks from ResultStage 2
+25/04/01 09:14:38 WARN SparkContext: Task not serializable: class $anonfun$1 (org.apache.spark.SparkException)
+    Serialization stack:
+        - object not serializable (class: org.apache.spark.sql.execution.QueryExecution$$anonfun$1)
+    ... (internal optimization warning — task was retried and succeeded)
+25/04/01 09:14:41 INFO TaskSetManager: Starting task 6.0 in stage 2.0 (TID 22)
+25/04/01 09:14:47 ERROR Executor: Exception in task 6.0 in stage 2.0 (TID 22)
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+    at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:336)
+    at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+    Caused by: java.net.SocketTimeoutException: Read timed out
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+25/04/01 09:14:47 ERROR TaskSchedulerImpl: Lost executor 2 on spark-worker-2: Remote RPC client disassociated.
+25/04/01 09:14:47 ERROR SparkContext: Error running job ProcessAndLoad
+org.apache.spark.SparkException: Job aborted due to stage failure: Task 6 in stage 2.0 failed 4 times
+
+============================================================
+[RUN #5]  2025-04-01 09:31:05  FAILED
+============================================================
+25/04/01 09:31:06 WARN GCMetrics: [spark-worker-2] java.lang.OutOfMemoryError: GC overhead limit exceeded
+    ... (GC pressure warning — worker continued execution)
+25/04/01 09:31:09 INFO DAGScheduler: Submitting 8 missing tasks from ResultStage 2
+25/04/01 09:31:14 INFO TaskSetManager: Finished task 0.0 in stage 2.0 (TID 32) in 4821 ms
+25/04/01 09:31:14 INFO TaskSetManager: Finished task 1.0 in stage 2.0 (TID 33) in 4756 ms
+25/04/01 09:31:19 ERROR Executor: Exception in task 4.0 in stage 2.0 (TID 36)
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+    at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:336)
+    Caused by: java.net.SocketTimeoutException: Read timed out
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+25/04/01 09:31:19 ERROR Executor: Exception in task 5.0 in stage 2.0 (TID 37)
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+    Caused by: java.net.SocketTimeoutException: Read timed out
+25/04/01 09:31:24 ERROR SparkContext: Error running job ProcessAndLoad
+org.apache.spark.SparkException: Job aborted due to stage failure
+
+============================================================
+[RUN #8]  2025-04-01 09:52:17  FAILED
+============================================================
+25/04/01 09:52:18 WARN GCMetrics: [spark-worker-1] java.lang.OutOfMemoryError: GC overhead limit exceeded
+    ... (GC pressure warning — worker continued execution)
+25/04/01 09:52:20 WARN SparkContext: Task not serializable warning in stage 3.0 (retried successfully)
+25/04/01 09:52:22 INFO TaskSetManager: Finished task 0.0 in stage 3.0 in 3102 ms
+25/04/01 09:52:27 INFO TaskSetManager: Finished task 2.0 in stage 3.0 in 5003 ms
+25/04/01 09:52:27 ERROR Executor: Exception in task 7.0 in stage 3.0 (TID 58)
+org.postgresql.util.PSQLException: An I/O error occurred while sending to the backend.
+    Caused by: java.net.SocketTimeoutException: Read timed out
+
+============================================================
+[정상 실행 예시]  RUN #1, #3, #4, #6, #7, #9, #10  SUCCESS
+============================================================
+정상 실행 시: 모든 파티션 처리 시간이 5초 미만 → 타임아웃 없이 완료
+실패 실행 시: 특정 파티션(데이터 양 많음)이 5초 초과 → SocketTimeoutException

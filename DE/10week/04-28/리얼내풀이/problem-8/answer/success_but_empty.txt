@@ -1,0 +1,17 @@
+==================================================
+버그 재현: DAG SUCCESS인데 DB 0건
+==================================================
+
+[Airflow 태스크 로그]
+Transferred 100 rows to daily_sales_final for 2025-04-01
+Marking task as SUCCESS.
+
+[실제 DB 확인]
+$ docker exec postgres psql -U airflow -d airflow -c "SELECT COUNT(*) FROM daily_sales_final;"
+ count
+-------
+     0
+(1 row)
+
+→ 로그에는 100건 이관 성공으로 보이지만 실제 DB에는 0건
+→ conn.commit() 누락으로 트랜잭션이 롤백됨

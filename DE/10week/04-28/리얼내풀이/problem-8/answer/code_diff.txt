@@ -1,0 +1,17 @@
+--- transfer_dag_buggy.py
++++ transfer_dag_fixed.py
+
+@ transfer_staging_to_final()
+
+     row_count = cur.rowcount
+     print(f"Transferred {row_count} rows to daily_sales_final for {partition_date}")
+
+-    # BUG: conn.commit() 누락
+-    # psycopg2는 autocommit=False가 기본값
+-    # → INSERT는 트랜잭션 내에서 실행되지만 commit 없이 close() 호출 시 롤백
+-    # → cur.rowcount는 정상적으로 N을 반환하므로 로그만 봐서는 정상처럼 보임
++    # FIX: conn.commit() 추가
++    # psycopg2는 autocommit=False가 기본값 → 명시적 commit 필요
++    conn.commit()
+     cur.close()
+     conn.close()

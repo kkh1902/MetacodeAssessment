@@ -1,9 +1,0 @@
-18a19
->     memoryOverhead: "512m"
-23,25c24,25
-<     memory: "512m"
-<     memoryOverhead: "64m"
-<     javaOptions: "-XX:+PrintGCDetails -XX:+PrintGCDateStamps"
----
->     memory: "1g"
->     memoryOverhead: "1g"

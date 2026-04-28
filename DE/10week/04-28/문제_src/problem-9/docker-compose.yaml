@@ -1,0 +1,58 @@
+---
+# 문제 9: 간헐적 Spark Job 실패 디버깅
+# 총 RAM: ~1.75GB
+services:
+
+  spark-master:
+    build: ./spark
+    image: custom-spark:3.5.4
+    container_name: spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    ports:
+      - "7077:7077"
+      - "18080:8080"
+    volumes:
+      - ./spark/jobs:/opt/spark/jobs
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  spark-worker-1:
+    image: custom-spark:3.5.4
+    container_name: spark-worker-1
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_WORKER_MEMORY=768m
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_WEBUI_PORT=8081
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./spark/jobs:/opt/spark/jobs
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    deploy:
+      resources:
+        limits:
+          memory: 512m

@@ -1,0 +1,26 @@
+==================================================
+데이터 흐름 추적: 각 단계별 row count
+==================================================
+
+[1단계] Kafka → Spark read
+  Spark 로그: "Kafka에서 읽은 행 수: 100"
+
+[2단계] Spark → staging_sales
+$ docker exec postgres psql -U airflow -d airflow -c "SELECT COUNT(*) FROM staging_sales;"
+ count
+-------
+   100
+(1 row)
+
+[3단계] staging_sales → daily_sales_final (버그 발생 지점)
+$ docker exec postgres psql -U airflow -d airflow -c "SELECT COUNT(*) FROM daily_sales_final;"
+ count
+-------
+     0
+(1 row)
+
+==================================================
+유실 지점: transfer_staging_to_final() 함수
+원인: conn.commit() 누락 → 트랜잭션 롤백
+코드 위치: transfer_dag.py line 69~74
+==================================================
