@@ -1,0 +1,13 @@
+# Q9 — Namespace
+# 본인 이름으로 변경: realestate-{본인이름}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: realestate-kihoon
+  labels:
+    student: kihoon
+    cohort: de2
+    week: "8"
+  annotations:
+    student-ko: "김기훈"
+    cohort-ko: "데엔2기"
