@@ -411,7 +411,7 @@ def build():
             "schedule_interval 가 5분 단위 (예: */5 * * * *)",
             "Airflow UI 에서 Task 성공 (초록 체크) 캡처 존재",
         ],
-        images=["Q1.png"],
+        images=["Q01_1.png"],
     )
 
     # ══════════════════════════════════════
@@ -437,7 +437,7 @@ def build():
             "/opt/airflow/data/ 경로에 data.csv 저장 확인",
             "Task 성공 + CSV 파일 존재 캡처",
         ],
-        images=["Q2.png"],
+        images=["Q01_2.png"],
     )
 
     # ══════════════════════════════════════
@@ -460,7 +460,7 @@ def build():
             "agg / groupBy / select 등으로 평균·최댓값·개수 계산",
             "결과 콘솔 출력 (show) 또는 파일 저장",
         ],
-        images=["Q3.png"],
+        images=["Q02_1.png"],
     )
 
     # ══════════════════════════════════════
@@ -504,7 +504,7 @@ def build():
             "Variable.get 으로 테이블명 동적 로딩",
             "SELECT 쿼리 실행 결과가 로그/캡처에 노출",
         ],
-        images=["Q4_1.png"],
+        images=["Q03.png"],
     )
 
     # ══════════════════════════════════════
@@ -527,7 +527,7 @@ def build():
             "DataFrame 에 UDF 적용 (withColumn 등)",
             "결과 저장 (write.csv / write.parquet)",
         ],
-        images=["Q4_2.png"],
+        images=["Q04.png"],
     )
 
     # ══════════════════════════════════════
@@ -550,7 +550,7 @@ def build():
             "ERROR 필터링 + count 집계",
             "writeStream.format(\"console\") 로 출력",
         ],
-        images=["Q5.png"],
+        images=["Q05.png"],
     )
 
     # ══════════════════════════════════════
