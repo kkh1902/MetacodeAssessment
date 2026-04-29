@@ -1,0 +1,29 @@
+# Q9 — Ingress (host: realestate.kihoon.local)
+# 사전 준비:
+#   1) ingress-nginx 컨트롤러 설치
+#      kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml
+#   2) /etc/hosts (Windows 는 C:\Windows\System32\drivers\etc\hosts) 에 다음 줄 추가
+#      127.0.0.1  realestate.kihoon.local
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: realestate-ingress
+  namespace: realestate-kihoon
+  labels:
+    student: kihoon
+    app: realestate-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: realestate.kihoon.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: realestate-svc
+                port:
+                  number: 80

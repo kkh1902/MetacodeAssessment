@@ -1,0 +1,19 @@
+# Q9 — Service (NodePort 30080, EC2 퍼블릭IP:30080 으로 접속)
+apiVersion: v1
+kind: Service
+metadata:
+  name: realestate-svc
+  namespace: realestate-kihoon
+  labels:
+    student: kihoon
+    app: realestate-nginx
+spec:
+  type: NodePort
+  selector:
+    app: realestate-nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+      protocol: TCP
