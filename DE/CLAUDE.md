@@ -8,6 +8,26 @@
 - 감점 사유는 `채점기준서.md`와 `풀이`를 근거로 판정
 - Excel 결과물 복붙용 피드백 행: **80점 이하는 연한 빨강 4(`F4B084`), 90점 이상은 연노랑(`FFF2CC`)**
 
+### 복붙용 피드백 작성 규칙
+
+- **기술적으로 작성한다** — 막연한 표현 금지. 누락된 파일명·옵션·옵코드·리소스 명시
+  - ❌ `Q8 미흡` / `캡처 누락`
+  - ✅ `8. capture/postgres_tables.png · capture/postgres_select.png 미제출`
+  - ✅ `7. SparkSubmitOperator 사용했으나 application 인자에 Q2_1 .py 경로 누락`
+- **감점 시 최소 3줄 이상** — 첫 줄은 총점, 둘째 줄부터 감점 사유 + 각 사유에 **파일 경로·코드 식별자·실제 값** 같은 기술적 디테일 포함하여 사유당 정보 밀도 높게 작성. 만점이면 `100` 한 줄만 (부가 텍스트 금지)
+  - 예 (감점):
+    ```
+    60
+    1. Q1/capture/airflow_ui.png 캡쳐 오류 — PDF 요구=hello_airflow_dag Task 성공 화면, 실제 내용=s3_download_dag Audit Log 화면. 코드 dag_id/BashOperator/schedule */5 모두 정상.
+    7. Q7/capture/spark_ui.png 우상단 application UI="Streaming Log Processor"=Q5/stream_log_processor.py의 SparkSession.appName과 일치 → silver_spark.py 실행 시 4040 UI(appName="silver_realestate_transform") 아님. 메뉴바 Structured Streaming 탭 존재 + 타임스탬프(19:17:36) Q5 streaming_output.png와 동일.
+    ```
+  - 예 (만점):
+    ```
+    100
+    ```
+- 감점 항목은 `{Q번호}. {기술적 사유}` 형식, 줄바꿈 `\n` 으로 나열
+- 사유는 **코드/캡처 파일 기준의 사실**만 — 추측·서술 금지
+
 ## 주차별 파일 위치
 
 ### 5주차 (Spark + S3 + Airflow)
@@ -19,25 +39,28 @@
 - 최종 리포트: `5week/5주차_채점_리포트.md`
 
 ### 8주차 (Spark + Airflow + K8s)
-- 채점기준서: `8week/채점기준서.md`
-- 정답 코드: `8week/풀이/` (dags, docker-compose.yml, k8s, scripts)
-- 수강생 제출물: `8week/수강생/8주차_이름/`
-- 채점 결과: `8week/8주차_채점_리포트.md`
-- 채점 스크립트: `8week/채점결과.py`
+- 문제지: `8week/문제지/` (8주차_문제지.pdf, .docx, images/, data/, generate.py)
+- 채점기준서: `8week/채점/채점기준서.md`
+- 채점 결과: `8week/채점/채점결과.xlsx`
+- 정답 코드 (본인 풀이): `8week/풀이/` (Q1~Q10, docker-compose.yml)
+- 수강생 제출물: `8week/수강생/`
+- 강사 정답지: `8week/정답지/` (강사 원본 수령 시)
 
 ### 9주차 (Kafka + Spark Streaming)
-- 채점기준서: `9week/채점기준서.md`
-- 정답 코드: `9week/문제/click_analyzer.py`, `click_producer.py`
-- 수강생 제출물: `9week/과제 제출/`
-- 최종 리포트: `9week/9주차_채점_리포트.md`
-- Docker: `9week/docker-compose.yml`
+- 문제지: `9week/문제지/`
+- 채점기준서: `9week/채점/채점기준서.md`
+- 채점 결과: `9week/채점/채점결과.xlsx`
+- 정답 코드 (본인 풀이): `9week/풀이/`
+- 수강생 제출물: `9week/수강생/`
+- 강사 정답지: `9week/정답지/` (강사 원본 수령 시)
 
 ### 10주차 (Kafka Cluster + PySpark + K8s)
-- 채점기준서: `10week/채점기준서.md`
-- 문제 소스: `10week/문제_src/problem-1 ~ problem-10/`
-- 정답 풀이: `10week/풀이/`, `10week/리얼내풀이/`, `10week/내풀이/`
-- 수강생 제출물: `10week/수강생/10주차_이름/`
-- 최종 리포트: `10week/10주차_채점_리포트.md`
+- 문제지: `10week/문제지/`
+- 채점기준서: `10week/채점/채점기준서.md`
+- 채점 결과: `10week/채점/채점결과.xlsx`
+- 정답 코드 (본인 풀이): `10week/풀이/`
+- 수강생 제출물: `10week/수강생/`
+- 강사 정답지: `10week/정답지/` (강사 원본 수령 시)
 
 ## 공통 체크리스트 (채점 시 주의)
 

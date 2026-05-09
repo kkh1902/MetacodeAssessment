@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>RAG Stream UI (Q5)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    #log { white-space: pre-wrap; background: #f5f5f5; padding: 1rem; border-radius: 6px; min-height: 200px; }
+    button { padding: .5rem 1rem; cursor: pointer; }
+    input { width: 60%; padding: .4rem; }
+  </style>
+</head>
+<body>
+  <h1>RAG Streaming Demo</h1>
+  <p>Q5 — CORS + fetch 기반 SSE 클라이언트.</p>
+
+  <div>
+    <input id="query" type="text" value="What is RAG?" />
+    <button onclick="sendQuery()">전송</button>
+  </div>
+
+  <h3>Stream Log</h3>
+  <div id="log"></div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000';
+    const API_KEY = 'dev-mode-key';  // DEV_MODE=true 일 때 무시됨
+
+    async function sendQuery() {
+      const query = document.getElementById('query').value;
+      const log = document.getElementById('log');
+      log.textContent = '';
+
+      const res = await fetch(`${API_BASE}/api/v1/chat/stream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': API_KEY,
+        },
+        body: JSON.stringify({ query: query }),
+      });
+
+      if (!res.ok) {
+        log.textContent = `Error ${res.status}: ${await res.text()}`;
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        log.textContent += decoder.decode(value, { stream: true });
+      }
+    }
+  </script>
+</body>
+</html>

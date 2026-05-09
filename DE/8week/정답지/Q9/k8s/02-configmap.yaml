@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: realestate-html
+  namespace: realestate-홍길동
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+      <meta charset="utf-8">
+      <title>부동산 실거래가 분석 — Q8 Gold 요약</title>
+      <style>
+        body { font-family: sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+        h1 { color: #234; }
+        table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+        th, td { border: 1px solid #ccd; padding: 8px 12px; text-align: left; }
+        thead { background: #234; color: white; }
+        small { color: #678; }
+      </style>
+    </head>
+    <body>
+      <h1>부동산 실거래가 분석 — Q8 Gold 요약</h1>
+      <p><small>제출자: 데엔 3기 · 홍길동 · 8주차 과제 · K8s 정적 페이지 배포 (Q9)</small></p>
+      <h2>시군구별 평당가 TOP 3 (2024년 1분기)</h2>
+      <table>
+        <thead><tr><th>순위</th><th>시군구</th><th>평당가 (만원)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>강남구</td><td>9,420</td></tr>
+          <tr><td>2</td><td>서초구</td><td>8,150</td></tr>
+          <tr><td>3</td><td>용산구</td><td>6,780</td></tr>
+        </tbody>
+      </table>
+      <p><small>데이터 출처: 국토교통부 실거래가 공개 API · Bronze→Silver→Gold ETL</small></p>
+    </body>
+    </html>

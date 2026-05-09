@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: realestate-홍길동
+  labels:
+    student: 홍길동
+    week: "8"

@@ -73,3 +73,14 @@ Thumbs.db
 # ============================================================
 *.log
 *.deb
+AILLM/.env
+
+# ============================================================
+# LLM 모델·토크나이저 (대용량, GitHub 100MB 제한 초과)
+# ============================================================
+AILLM/14week/final_lora_model/
+AILLM/14week/models/
+AILLM/14week/models*/
+**/models--meta-llama--*/
+*.safetensors
+**/tokenizer.json

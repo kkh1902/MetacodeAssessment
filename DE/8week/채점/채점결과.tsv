@@ -1,0 +1,33 @@
+﻿문제	김민성	신민재	이민호	장재훈	홍석주	김민혁	김나경	김민주	안주영	정찬엽	오창석
+Q1	O	O	O	O	O	O	Q1_1 측쳐 오류(s3_download_dag 화면)	O	O	O	O
+Q2	Q2_2 SparkSubmitOperator Task failed(막대 빨강색)	O	O	O	O	O	O	O	O	O	O
+Q3	O	O	Airflow 메타DB dag 테이블 SELECT(별도 PG 없음)	O	O	O	Airflow 내장 dag 테이블 SELECT(별도 PG 도입 X)	O	dag_run 시스템 테이블 SELECT(별도 PG 없음)	O	query_result.png 가 SELECT 결과 아닌 DAGs 목록 화면
+Q4	O	O	O	O	O	O	O	O	O	O	O
+Q5	O	O	O	O	O	O	O	O	O	O	O
+Q6	airflow_graph Grid view + s3_objects AWS CLI(콘솔/mc ls 아닔)	O	O	O	O	O	O	O	O	O	S3 업로드 함수 pass
+Q7	spark_ui.png 이 8080 Master UI(PDF는 4040 Application UI 명시)	O	O	O	O	O	Q7 spark_ui.png 오류(Q5 Streaming app 화면)	Q7 spark_ui.png 이 4040 UI 아닌 Airflow task 로그 캡처	O	O	실행 캡처 없음
+Q8	O	O	O	O	O	Q8 빈 폴더, 미제출	O	O	O	O	JDBC URL 미설정, 캡처 없음
+Q9	O	O	O	O	O	O	O	O	O	O	배포 캡처 없음
+Q10	O	O	O	O	O	O	O	O	O	O	HPA 캡처 없음
+총점	60	100	90	100	100	90	60	70	90	100	40
+복붙용 피드백	"60
+2. Q2/capture/q2_2_task_log1.png · q2_2_task_log2.png — SparkSubmitOperator(run_analyze_csv) 좌측 Recent Tasks 막대그래프 모두 빨강색(failed) 상태, 녹색(success) run 없음. 코드(SparkSubmitOperator + application=/opt/airflow/dags/analyze_csv.py + */5)는 정상.
+6. Q6/capture/airflow_graph.png 이 Graph view 아닌 Grid/Audit Log 엔스턴스 리스트 화면 — PDF 16쪽 참고이미지 ""TaskGroup 박스 그룹 시각화 (6개 task 병렬)"" 미충족. + s3_objects.png는 PDF 명세 ""S3 콘솔 또는 mc ls""가 아닌 aws s3 ls 터미널 출력 캡쳐.
+7. Q7/capture/spark_ui.png 이 8080 Spark Master UI(spark://172.21.0.5:7077, Workers/Completed Applications 테이블) 이므로 PDF 19쪽 명시 ""Spark UI 4040 포트 Job 실행 화면"" 미충족. silver_spark.py 실행은 증명되나(Q7-SilverTransform application 55건 FINISHED) Job/Stage/SQL DAG 이 안 보임.
+9. Q9/k8s 파일명 양식 위반 — PDF=01-namespace.yaml ~ 05-ingress.yaml(하이픈), 제출=01_namespace.yaml 외 4개 언더스코어. PDF 1쪽 ""양식 틀릴 시 10점 감점"".
+10. Q10/k8s 07_hpa.yaml — PDF=07-hpa.yaml(하이픈). ※ 9·10 같은 패턴으로 양식 감점 -10 통합 1회 적용."	100	"90
+3. Q3/db_query_dag.py 메타DB dag 테이블 SELECT — PostgresHook(""airflow_metadata_db"")+Variable.get(""db_query_table_name"")=""dag""로 Airflow 내장 메타DB 시스템 dag 테이블 조회. capture/query_result.png에 columns=['dag_id','is_paused','is_active',...]+rows='s3_download_dag','hello_airflow_dag','daily_word_dag','run_spark_job' 등 등록 DAG 메타데이터 노출. 별도 PG 컴테이너·본인 테이블 CREATE/INSERT 없음 — PDF 의도(별도 PG 환경 + 본인 테이블 동적 로딩) 미충족."	100	100	"90
+8. Q6_7_8/Q8 전체 하위 폴더(capture/dags/scripts) 3개 모두 파일 0개 빈 상태 — gold_spark_sql.py(5종 집계+window function+write.jdbc 모두) 아예 미제출, postgres_tables.png · postgres_select.png 캡처 없음. Q1·Q3·Q7 캡처는 v3 검증 전부 통과(Q7 spark_ui.png는 appName=""Silver_Transform_202512""로 정답지 이름과 다르나 silver_spark.py L18에서 의도 작명, 화면 자체가 silver 변환 Spark Job이므로 O 유지)."	"60
+1. Q1/capture/airflow_ui.png 측쳐 오류 — PDF 요구=hello_airflow_dag Task 성공 화면, 실제 내용=s3_download_dag(Q1_2)의 Audit Log 화면. 코드 dag_id=""hello_airflow_dag""/BashOperator/echo ""Hello Airflow""/*/5 모두 정상.
+3. Q3/db_query_dag.py 별도 PostgreSQL 도입 없음 — PostgresHook + Variable.get(""target_table"") + SELECT 코드는 정상이나 target_table=""dag""로 설정, query_result.png에 example_branch_operator/example_bash_decorator 등 Airflow 자동 로드 example DAG들 노출 → Airflow 메타DB 시스템 dag 테이블 그대로 SELECT, 별도 PG 컴테이너·본인 테이블 생성 없음.
+7. Q7/capture/spark_ui.png 측쳐 오류 — 우상단 application UI=""Streaming Log Processor""가 Q5/stream_log_processor.py의 SparkSession.appName(""Streaming Log Processor"")과 일치. PDF 요구는 silver_spark.py 실행 시의 4040 UI(appName=""silver_realestate_transform"")이지만 Q5 SparkSession의 4040 화면을 Q7 폴더에 배치. 메뉴바에 Structured Streaming 탭 존재 + Started At=19:17:36(Q5 streaming_output.png와 동일 시각)도 Q5 실행 증거."	"70
+7. Q7/capture/spark_ui.png 이 Spark 4040 UI 화면 아닌 Airflow task 실행 로그(subprocess.py:106 INFO) 캡처 — 우상단 application UI=silver_realestate_transform 표시 없음, Jobs/Stages/Storage 탭 없음. silver_spark.py 코드(BashOperator+python silver_spark.py + appName=""silver_realestate_transform"") 자체는 정상.
+※ v2 spark-submit 강제 폐기로 Q7 코드 실행 방식(BashOperator+python)은 허용 / Q8 그대로 O 유지 / v3 신규 Q7 캡처 spec 미충족으로 -10."	"90
+3. Q3/db_query_dag.py가 SELECT * FROM dag_run LIMIT 10 실행 — capture/query_result.png 로그 'Running statement: SELECT * FROM dag_run LIMIT 10'+결과행에 'postgres_dag','hello_airflow_dag','s3_csv_download_dag' 등 Airflow 메타DB dag_run 시스템 테이블 노출. docker-compose.yaml에 Airflow 메타DB postgres 1개만 정의, 별도 PG 없음 — v3 검증항목 B 위배.
+※ v2 spark-submit 강제 폐기 → Q7 (PythonOperator+subprocess+appName=""Silver Realestate Transform"")·Q8 모두 정상 동작으로 X→O 회복(+20). v3 Q3 시스템 테이블 SELECT 사유 신규(-10). 순변동 +10."	100	"40
+3. Q3/capture/query_result.png 캡처 내용 오류 — PDF 요구=SELECT 결과 노출 화면, 실제 내용=Airflow DAGs 목록 화면(airflow_spark/airflow_variable_connection/hello_airflow_dag/s3_download_dag 4개). db_query_dag.py 코드 자체(PostgresHook+Variable.get(""target_table_name"")+SELECT)는 정상.
+6. Q6_7_8/Q6/dags/bronze_realestate_collect.py upload_to_s3 함수 본문 pass뿐 + DAG에 upload task 미등록 — boto3.put_object/S3Hook.load_string 호출 없음.
+7. Q6_7_8/Q7/capture/ 폴더 비어있음 — spark_ui.png · s3_silver.png 미제출. silver_spark.py 코드(udf 2회+approxQuantile+write.parquet partitionBy snappy) 자체는 정상.
+8. Q6_7_8/Q8/scripts/gold_spark.py JDBC URL 플레이스홀더 미치환 — ""jdbc:postgresql://<DB_HOST>:5432/<DB_NAME>"" 그대로. Q8/capture/ 폴더 비어있음(postgres_tables.png · postgres_select.png 미제출).
+9. Q9/capture/ 폴더 비어있음 — instance_id.png · kubectl_get_all.png · browser.png 모두 미제출. k8s manifest 5개 자체는 존재.
+10. Q10/k8s/07-hpa.yaml 존재하나 load-test.sh가 디렉토리(빈 폴더). Q10/capture/ 폴더 비어있음 — kubectl_top_pod.png · hpa_watch.png · hpa_describe.png 미제출."
